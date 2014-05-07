@@ -1,0 +1,213 @@
+ <project default="copyConfigFiles">
+ 
+ 	<!-- 
+		- Creates a jar file to local directory
+		- copies required config (batch_config, log config, rs-folder) and resources from specified folders to new folder
+		- creates sym links to specified lib folder and data folder
+		
+		NOTE
+		- 	If the remote destination folder should not contain a data section, adapt the
+			property "remote_dir" in task "setRemoteDir"!
+		-	Change your username to log in on the remote machine ("user")
+		-	You probabliy need to adapt the local directory ("dest_jar_local")
+		-   You probabliy need to adapt the remote directory (which normally includes a username): "remote_base_dir"
+		
+		These contents should be present in $remote_config_file_source: (usually ./<Project>/standard)
+		- config/data: shapefiles etc.
+		- lib folder at $remote_config_file_source
+	 -->
+ 
+ 	<property file="../../project.properties"/>
+ 	
+ 	<property name="jarFileBuilder" value="TEMPLATE TEMPLATE"/>
+ 	
+ 	<property name="dest_jar_local" location="TEMPLATE/TEMPLATE" />
+ 	
+ 	<property name="releaseName" value="CRAFTY-TEMPLATE"/>
+ 	<property name="release_postfix" value="trunk"/>
+ 	 	
+ 	<property name="CRAFTY-project" value="TEMPLATE/TEMPLATE"/>
+ 	<property name="local_lib_folder" value="${CRAFTY-project}/lib"/>
+ 	
+ 	<!-- values relative to ./ (Project Dir) -->
+ 	<property name="scriptGenerationScriptFolder" value="./config/cluster/"/>
+ 	<property name="scenarioDataFolder" value="./data/"/>
+ 		
+ 	<!-- value relative to ./config -->
+ 	<property name="log_config_file" value="../../config/log/log4j_cluster.properties"/>
+ 	<property name="manifest_file" value="./manifest/META-INF/MANIFEST.MF"/>	
+ 	 	
+ 	
+ 	<property name="user" value="TEMPLATE"/>
+ 	<property name="remote_base_dir" value="/exports/work/geos_lurg/TEMPLATE"/>
+ 	<!--property name="remote_base_dir" value="/exports/work/scratch/sholzhau/"/-->
+ 	<!--property name="remote_base_dir" value="/exports/work/scratch/s/"/-->
+ 	<property name="remote_host" value="eddie.ecdf.ed.ac.uk"/>
+ 	
+ 	<property name="remote_config_file_source" value="${remote_base_dir}/standard"/>
+ 	<property name="remote_lib_folder_name" value="CRAFTY_lib"/>
+
+ 	
+ 	<target name="setRemoteDir">
+ 		<tstamp>
+ 			<format property="DSTAMP" pattern="yyyy-MM-dd_HH-mm" locale="ENGLISH, GERMANY"/>
+ 		</tstamp>
+ 		<property name="local_dir" value="${dest_jar_local}/${release}_${DSTAMP}"/>
+ 		<property name="remote_dir" value="${remote_base_dir}/${release}_${DSTAMP}"/> 
+ 		
+ 		<propertyfile file="../../project.properties">
+ 			<entry  key="lastRemoteDir" value="${remote_dir}"/>
+ 		</propertyfile> 
+ 	</target>
+    		
+ 	<target name="copyGenerationScriptFiles" depends="make_jar">
+ 		  <copy todir="${local_dir}/python/">
+ 		  	<fileset id="myfileset2" dir="${basedir}/../../${scriptGenerationScriptFolder}">
+ 				<include name="**/*.*"/>
+ 			 </fileset>
+ 		  </copy>
+ 	</target>
+
+ 	<target name="copyScenarioFiles" depends="make_jar">
+ 		  <copy todir="${local_dir}/data/">
+ 		  	<fileset id="myfileset3" dir="${basedir}/../../${scenarioDataFolder}">
+ 				<include name="**/*.*"/>
+ 			 </fileset>
+ 		  </copy>
+ 	</target>
+
+ 	<target name="copyLogConfig" depends="make_jar">
+ 		  <copy file="${log_config_file}" todir="${local_dir}/config/log/">
+ 		  </copy>
+ 	</target>
+ 		  		
+	<target name="make_jar" description="Create JAR archive">
+		<echo>Create jarfile ${local_dir}/${releaseName}.jar...</echo>
+		<mkdir dir="${local_dir}"/> 
+	    <jar destfile="${local_dir}/${releaseName}.jar"
+	    	basedir="${basedir}/../../bin"
+	        includes="**/*.class"
+	        update="false"
+	        compress="true"
+	        duplicate="add"
+	        manifest="${basedir}/../${manifest_file}">
+	       <manifest>
+	            <attribute name="Built-By" value="${jarFileBuilder}"/>
+	            <attribute name="Implementation-Version"  value="${release}"/>
+	            <attribute name="Built-Date" value="${TODAY}"/>
+	        </manifest>
+	    </jar>
+    </target>
+
+ 	<target name="queryPassword">
+		<input
+			message="Enter passwort!"
+			addproperty="passphrase"
+		/>
+ 	</target>
+
+	<target name="transfer" depends="make_jar, setRemoteDir, copyGenerationScriptFiles, copyScenarioFiles, copyLogConfig, queryPassword">	
+		<echo>Copy model files to ... ${remote_host}</echo>
+			
+		<sshexec host="${remote_host}"
+				username="${user}"
+				password="${passphrase}"
+			  trust="true"
+				command="mkdir -p ${remote_dir}/"/>
+		
+	 	<scp
+	       todir="${user}@${remote_host}:${remote_dir}" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" >
+	 		<fileset id="myfileset" dir="${local_dir}">
+	 		       		<include name="**/*"/>
+	 		</fileset>
+	  	</scp>
+  	</target>
+ 	
+	<target name="transfer_data" depends="queryPassword" description="Copy data files to remote server">	
+		<echo>Copy data files from ${basedir}/../../${scenarioDataFolder} to ... ${remote_host}</echo>
+		<sshexec host="${remote_host}"
+				username="${user}"
+				password="${passphrase}"
+			  trust="true"
+				command="mkdir -p ${lastRemoteDir}/data"/>
+	 	<scp
+	       todir="${user}@${remote_host}:${lastRemoteDir}/data" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" >
+	 		<fileset id="myfileset" dir="${basedir}/../../${scenarioDataFolder}">
+	 		       		<include name="**/*"/>
+	 		</fileset>
+	  	</scp>
+  	</target>
+		
+	<target name="transfer_standard" depends="queryPassword" description="Copy libs and Co to remote server">	
+		<echo>Copy lib files to ... ${remote_host}</echo>
+			
+		<sshexec host="${remote_host}"
+				username="${user}"
+				password="${passphrase}"
+			  trust="true"
+				command="mkdir -p ${remote_config_file_source}/${remote_lib_folder_name}"/>
+		
+	 	<scp
+	       todir="${user}@${remote_host}:${remote_config_file_source}/${remote_lib_folder_name}" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" >
+	 		<fileset id="myfileset" dir="${local_lib_folder}">
+	 		       		<include name="**/*"/>
+	 		</fileset>
+	  	</scp>
+  	</target>
+
+	<target name="transfer_crafty" depends="queryPassword" description="Copy crafty lib to remote server">	
+		<echo>Copy crafty lib to ... ${remote_host}</echo>
+	 	<scp
+	       todir="${user}@${remote_host}:${remote_config_file_source}/${remote_lib_folder_name}" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" 
+	 		file="${local_lib_folder}/CRAFTY.jar">
+	  	</scp>
+  	</target>
+ 	
+	<target name="transfer_MoRe" depends="queryPassword" description="Copy MoRe lib to remote server">	
+		<echo>Copy crafty lib to ... ${remote_host}</echo>
+	 	<scp
+	       todir="${user}@${remote_host}:${remote_config_file_source}/${remote_lib_folder_name}" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" 
+	 		file="${local_lib_folder}/MORe.jar">
+	  	</scp>
+  	</target>
+	 		       			
+ 	<target name="copyConfigFiles" depends="transfer, setRemoteDir">
+		<sshexec host="${remote_host}"
+				username="${user}"
+				password="${passphrase}"
+			  trust="true"
+				command="mkdir ${remote_dir}/output;
+						 
+						 ln -s ${remote_config_file_source}/config/data ${remote_dir}/config/data ;
+						 ln -s ${remote_config_file_source}/${remote_lib_folder_name} ${remote_dir}/${remote_lib_folder_name};
+				"/>
+ 	</target>
+
+	<target name="removeLocalFiles">
+		<delete dir="${dest_jar_local}/${svn.info.rev}-${DSTAMP}" />
+	</target>
+ 	
+ 	<!-- probably won't work when you include a timestamp in the dirs -->
+ 	<target name="cleanUpAll" depends="removeLocalFiles">
+ 		<sshexec host="${remote_host}"
+ 			username="${user}"
+ 			password="${passphrase}"
+ 			trust="true"
+ 			command="rm -R ${remote_dir}"/>
+ 	</target>
+</project>

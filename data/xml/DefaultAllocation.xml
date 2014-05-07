@@ -1,0 +1,3 @@
+<!-- <allocation class="org.volante.abm.example.SimpleAllocationModel" /> -->
+<!-- This is only used if called in Region.xml file -->
+<allocation class="org.volante.abm.example.GiveUpGiveInAllocationModel" numCells="10000" numTakeovers="10000" probabilityExponent="2"/>

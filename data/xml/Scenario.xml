@@ -1,0 +1,20 @@
+<scenario startTick="2000" endTick="2020" world="TEMPLATE" scenario="TEMPLATE">
+	<capitals class="org.volante.abm.serialization.CSVCapitalLoader" file="csv/Capitals.csv" indexed="true"/>
+	<services class="org.volante.abm.serialization.CSVServiceLoader" file="csv/Services.csv" indexed="true"/>
+	<landUses class="org.volante.abm.serialization.CSVLandUseLoader" file="csv/LandUses.csv" indexed="true"/>
+	<outputs outputDirectory="output/%s-%w/%i" filePattern="%s-%i-%o" tickPattern="%s-%i-%o-%y" >
+		<output class="org.volante.abm.output.DisplayVideoWriter" includeSurroundings="true" imagesPerFrame="2" height="500" width="700">
+			<display class="org.volante.abm.template.visualisation.TestAgents" title="AgentTypesVideo"/>
+		</output>
+		<output class="org.volante.abm.output.CellTable" addTick="true" addRegion="true" addCellRegion="true"
+				addServices="true" addCapitals="true" addLandUse="true" addAgent="true" doubleFormat="0.000" />				
+	</outputs>
+	<displays>
+		<display class="org.volante.abm.visualisation.CapitalDisplay" initial="CProd" title="Capitals"/>
+		<display class="org.volante.abm.visualisation.ProductionDisplay" initial="Cereal" title="Production"/>
+		<display class="org.volante.abm.visualisation.CompetitivenessDisplay" initial="High_Cereals" title="Competitiveness"/>
+		<display class="org.volante.abm.template.visualisation.TestAgents" title="AgentTypes"/>
+		<display class="org.volante.abm.visualisation.SubmodelDisplays" title="Submodels"/>
+	</displays>	
+	<worldLoaderFile>xml/World.xml</worldLoaderFile>
+</scenario>
