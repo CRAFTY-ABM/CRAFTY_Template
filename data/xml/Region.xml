@@ -17,6 +17,6 @@
 	</competition>
 
 	<demand class="org.volante.abm.example.RegionalDemandModel" demandCSV="csv/Demand1.csv"/>
-		
+	<socialNetworkParamFile>xml/SocialNetwork_WsBeta.xml</socialNetworkParamFile>
 	<agentFile>xml/Agents.xml</agentFile>
 </region>
