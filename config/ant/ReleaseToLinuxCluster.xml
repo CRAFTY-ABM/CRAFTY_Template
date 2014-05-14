@@ -27,7 +27,10 @@
  	<property name="release_postfix" value="trunk"/>
  	 	
  	<property name="CRAFTY-project" value="TEMPLATE/TEMPLATE"/>
+ 	<property name="CRAFTY_Parallel-project" value="TEMPLATE/TEMPLATE"/>
+ 	
  	<property name="local_lib_folder" value="${CRAFTY-project}/lib"/>
+ 	<property name="local_lib_folder_parallel" value="${CRAFTY_Parallel-project}/lib"/>
  	
  	<!-- values relative to ./ (Project Dir) -->
  	<property name="scriptGenerationScriptFolder" value="./config/cluster/"/>
@@ -60,7 +63,7 @@
  		</propertyfile> 
  	</target>
     		
- 	<target name="copyGenerationScriptFiles" depends="make_jar">
+ 	<target name="copyGenerationScriptFiles">
  		  <copy todir="${local_dir}/python/">
  		  	<fileset id="myfileset2" dir="${basedir}/../../${scriptGenerationScriptFolder}">
  				<include name="**/*.*"/>
@@ -126,8 +129,45 @@
 	  	</scp>
   	</target>
  	
+	<target name="transferClusterScripts" depends="copyGenerationScriptFiles, queryPassword">	
+		<echo>Copy cluster scripts to ... ${remote_host}</echo>
+			
+		<sshexec host="${remote_host}"
+				username="${user}"
+				password="${passphrase}"
+			  trust="true"
+				command="mkdir -p ${lastRemoteDir}/python"/>
+		
+	 	<scp
+	       todir="${user}@${remote_host}:${lastRemoteDir}/python" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" >
+	 		<fileset id="myfileset" dir="${local_dir}/python">
+	 		       		<include name="**/*"/>
+	 		</fileset>
+	  	</scp>
+  	</target>
+	  		
+	<target name="transfer_jar" depends="make_jar, queryPassword">	
+		<echo>Copy model jar file to ... ${remote_host}</echo>
+			
+		<sshexec host="${remote_host}"
+				username="${user}"
+				password="${passphrase}"
+			  trust="true"
+				command="mkdir -p ${lastRemoteDir}"/>
+		
+	 	<scp
+	       todir="${user}@${remote_host}:${lastRemoteDir}" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" 
+	 		file="${local_dir}/${releaseName}.jar"/>
+  	</target>
+	  		
 	<target name="transfer_data" depends="queryPassword" description="Copy data files to remote server">	
-		<echo>Copy data files from ${basedir}/../../${scenarioDataFolder} to ... ${remote_host}</echo>
+		<echo>Copy data files from ${basedir}/../../${scenarioDataFolder} to ... ${remote_host}:${lastRemoteDir}/data</echo>
 		<sshexec host="${remote_host}"
 				username="${user}"
 				password="${passphrase}"
@@ -172,6 +212,17 @@
 	 	   trust="true"
 	 		sftp="true" 
 	 		file="${local_lib_folder}/CRAFTY.jar">
+	  	</scp>
+  	</target>
+  	
+  	<target name="transfer_crafty_parallel" depends="queryPassword" description="Copy crafty lib to remote server">	
+		<echo>Copy crafty lib to ... ${remote_host}</echo>
+	 	<scp
+	       todir="${user}@${remote_host}:${remote_config_file_source}/${remote_lib_folder_name}" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" 
+	 		file="${local_lib_folder_parallel}/CRAFTY-P.jar">
 	  	</scp>
   	</target>
  	
