@@ -20,14 +20,9 @@
  	
  	<property name="remote_host" value="eddie.ecdf.ed.ac.uk"/>
  	
-
-    		
- 
+ 	<taskdef name="logindialog" classname="antlogindialog.PasswordTask" classpath="" />
  	<target name="queryPassword">
-		<input
-			message="Enter passwort!"
-			addproperty="passphrase"
-		/>
+		<logindialog message="Login Details: " username="username" defaultusername="${user}" password="passphrase"/>
  	</target>
 
 	<target name="transfer" depends="queryPassword">	

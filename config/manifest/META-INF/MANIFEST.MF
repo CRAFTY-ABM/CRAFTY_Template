@@ -10,12 +10,12 @@ Class-Path: . CRAFTY_lib/gt2-referencing-2.3.3.jar CRAFTY_lib/JRI.jar
  RAFTY_lib/jung-api-2.0.1.jar CRAFTY_lib/gt-referencing-10.4.jar CRAFT
  Y_lib/saf.core.runtime.jar CRAFTY_lib/jscience.jar CRAFTY_lib/javacsv
  .jar CRAFTY_lib/vecmath-1.3.1.jar CRAFTY_lib/Uranus.jar CRAFTY_lib/ju
- ng-io-2.0.1.jar CRAFTY_lib/jts-1.12.jar CRAFTY_lib/gt2-epsg-wkt-2.3.3
+ ng-io-2.0.1.jar CRAFTY_lib/jts-1.13.jar CRAFTY_lib/gt2-epsg-wkt-2.3.3
  .jar CRAFTY_lib/colt-1.2.0.jar CRAFTY_lib/ParMa.jar CRAFTY_lib/gt-met
  adata-10.4.jar CRAFTY_lib/MORe.jar CRAFTY_lib/gt2-main-2.3.3.jar CRAF
  TY_lib/xmlgraphics-commons-1.3.1.jar CRAFTY_lib/jide-oss-2.9.7.jar CR
  AFTY_lib/guava-12.0.1.jar CRAFTY_lib/javaRasters.jar CRAFTY_lib/simpl
  e-xml-2.7.1.jar CRAFTY_lib/log4j-1.2.17.jar CRAFTY_lib/gt2-referencin
  g-2.3.3.jar CRAFTY_lib/gt2-main-2.3.3.jar  CRAFTY_lib/gt2-epsg-wkt-2.
- 3.3.jar
+ 3.3.jar CRAFTY_lib/commons-cli-1.2.jar
 Main-Class: org.volante.abm.serialization.ModelRunner

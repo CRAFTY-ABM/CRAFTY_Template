@@ -1,4 +1,4 @@
- <project default="copyConfigFiles">
+ <project default="transferAll">
  
  	<!-- 
 		- Creates a jar file to local directory
@@ -21,7 +21,7 @@
  	
  	<property name="jarFileBuilder" value="TEMPLATE TEMPLATE"/>
  	
- 	<property name="dest_jar_local" location="TEMPLATE/TEMPLATE" />
+ 	<property name="dest_local_folder" location="TEMPLATE/TEMPLATE" />
  	
  	<property name="releaseName" value="CRAFTY-TEMPLATE"/>
  	<property name="release_postfix" value="trunk"/>
@@ -42,12 +42,13 @@
  	 	
  	
  	<property name="user" value="TEMPLATE"/>
- 	<property name="remote_base_dir" value="/exports/work/geos_lurg/TEMPLATE"/>
+ 	<property name="remote_base_dir" value="sholzhau/CRAFTY-ConsVis-A"/>
+ 	<property name="remote_base_dir_prefix" value="/exports/work/geos_lurg/"/>
  	<!--property name="remote_base_dir" value="/exports/work/scratch/sholzhau/"/-->
  	<!--property name="remote_base_dir" value="/exports/work/scratch/s/"/-->
  	<property name="remote_host" value="eddie.ecdf.ed.ac.uk"/>
  	
- 	<property name="remote_config_file_source" value="${remote_base_dir}/standard"/>
+ 	<property name="remote_config_file_source" value="${remote_base_dir_prefix}${remote_base_dir}/standard"/>
  	<property name="remote_lib_folder_name" value="CRAFTY_lib"/>
 
  	
@@ -55,16 +56,16 @@
  		<tstamp>
  			<format property="DSTAMP" pattern="yyyy-MM-dd_HH-mm" locale="ENGLISH, GERMANY"/>
  		</tstamp>
- 		<property name="local_dir" value="${dest_jar_local}/${release}_${DSTAMP}"/>
+ 		<property name="dest_local_folder" value="${dest_local_folder}/${release}_${DSTAMP}"/>
  		<property name="remote_dir" value="${remote_base_dir}/${release}_${DSTAMP}"/> 
  		
  		<propertyfile file="../../project.properties">
- 			<entry  key="lastRemoteDir" value="${remote_dir}"/>
+ 			<entry  key="lastRemoteDirEnding" value="${remote_dir}"/>
  		</propertyfile> 
  	</target>
     		
  	<target name="copyGenerationScriptFiles">
- 		  <copy todir="${local_dir}/python/">
+ 		  <copy todir="${dest_local_folder}/python/">
  		  	<fileset id="myfileset2" dir="${basedir}/../../${scriptGenerationScriptFolder}">
  				<include name="**/*.*"/>
  			 </fileset>
@@ -72,7 +73,7 @@
  	</target>
 
  	<target name="copyScenarioFiles" depends="make_jar">
- 		  <copy todir="${local_dir}/data/">
+ 		  <copy todir="${dest_local_folder}/data/">
  		  	<fileset id="myfileset3" dir="${basedir}/../../${scenarioDataFolder}">
  				<include name="**/*.*"/>
  			 </fileset>
@@ -80,14 +81,14 @@
  	</target>
 
  	<target name="copyLogConfig" depends="make_jar">
- 		  <copy file="${log_config_file}" todir="${local_dir}/config/log/">
+ 		  <copy file="${log_config_file}" todir="${dest_local_folder}/config/log/">
  		  </copy>
  	</target>
  		  		
-	<target name="make_jar" description="Create JAR archive">
-		<echo>Create jarfile ${local_dir}/${releaseName}.jar...</echo>
-		<mkdir dir="${local_dir}"/> 
-	    <jar destfile="${local_dir}/${releaseName}.jar"
+	<target name="make_jar" description="Create JAR archive" depends="">
+		<echo>Create jarfile ${dest_jar_local}/${releaseName}.jar...</echo>
+		<mkdir dir="${dest_local_folder}"/> 
+	    <jar destfile="${dest_local_folder}/${releaseName}.jar"
 	    	basedir="${basedir}/../../bin"
 	        includes="**/*.class"
 	        update="false"
@@ -102,34 +103,40 @@
 	    </jar>
     </target>
 
+ 	<taskdef name="logindialog" classname="antlogindialog.PasswordTask" classpath="" />
  	<target name="queryPassword">
-		<input
-			message="Enter passwort!"
-			addproperty="passphrase"
-		/>
+		<logindialog message="Login Details: " username="username" defaultusername="${user}" password="passphrase"/>
  	</target>
 
-	<target name="transfer" depends="make_jar, setRemoteDir, copyGenerationScriptFiles, copyScenarioFiles, copyLogConfig, queryPassword">	
+	<target name="transferAll" depends="make_jar, setRemoteDir, copyGenerationScriptFiles, copyScenarioFiles, copyLogConfig, queryPassword, transfer_mainScenarioData">	
 		<echo>Copy model files to ... ${remote_host}</echo>
 			
 		<sshexec host="${remote_host}"
 				username="${user}"
 				password="${passphrase}"
 			  trust="true"
-				command="mkdir -p ${remote_dir}/"/>
+				command="mkdir -p ${remote_base_dir_prefix}${remote_dir}/"/>
 		
 	 	<scp
 	       todir="${user}@${remote_host}:${remote_dir}" 
 	       password="${passphrase}"
 	 	   trust="true"
 	 		sftp="true" >
-	 		<fileset id="myfileset" dir="${local_dir}">
+	 		<fileset id="myfileset" dir="${dest_local_folder}">
 	 		       		<include name="**/*"/>
 	 		</fileset>
 	  	</scp>
   	</target>
  	
-	<target name="transferClusterScripts" depends="copyGenerationScriptFiles, queryPassword">	
+ 	<target name="checkLastRemoteDir" depends="checkLastRemoteDirSet">
+ 		<property name="lastRemoteDir" value="${remote_base_dir_prefix}${lastRemoteDirEnding}"/>
+ 	</target>
+		
+ 	<target name="checkLastRemoteDirSet" unless="lastRemoteDirEnding">
+ 		<fail message="You need to perform the transfer task once before performing others tasks!"/>
+ 	</target>
+ 	
+	<target name="transferClusterScripts" depends="checkLastRemoteDir, copyGenerationScriptFiles, queryPassword">	
 		<echo>Copy cluster scripts to ... ${remote_host}</echo>
 			
 		<sshexec host="${remote_host}"
@@ -143,13 +150,13 @@
 	       password="${passphrase}"
 	 	   trust="true"
 	 		sftp="true" >
-	 		<fileset id="myfileset" dir="${local_dir}/python">
+	 		<fileset id="myfileset" dir="${dest_local_folder}/python">
 	 		       		<include name="**/*"/>
 	 		</fileset>
 	  	</scp>
   	</target>
 	  		
-	<target name="transfer_jar" depends="make_jar, queryPassword">	
+	<target name="transfer_jar" depends="checkLastRemoteDir, make_jar, queryPassword">	
 		<echo>Copy model jar file to ... ${remote_host}</echo>
 			
 		<sshexec host="${remote_host}"
@@ -163,10 +170,11 @@
 	       password="${passphrase}"
 	 	   trust="true"
 	 		sftp="true" 
-	 		file="${local_dir}/${releaseName}.jar"/>
+	 		file="${dest_local_folder}/${releaseName}.jar"/>
   	</target>
 	  		
-	<target name="transfer_data" depends="queryPassword" description="Copy data files to remote server">	
+	<target name="transfer_mainScenarioData" depends="checkLastRemoteDir, queryPassword" 
+		description="Copy main scenario data files to remote server">	
 		<echo>Copy data files from ${basedir}/../../${scenarioDataFolder} to ... ${remote_host}:${lastRemoteDir}/data</echo>
 		<sshexec host="${remote_host}"
 				username="${user}"
@@ -183,7 +191,45 @@
 	 		</fileset>
 	  	</scp>
   	</target>
+
+	<target name="transfer_subdata" depends="checkLastRemoteDir, queryPassword" 
+			description="Copy subfolder data files to remote server">	
+		<antform title="Select (Sub-)Data folder" 
+			save="../../project.properties"
+			image="doc/images/testlogo.jpg">
+			
+			<label>Choose the subfolder to transfer!</label>
+			<fileSelectionProperty label="Subfolder: " 
+				property="data_subfolder"  directoryChooser="true" columns="77"
+			/>
+		</antform>
+			
+		<propertyregex property="data_subfolder_extract"
+			               input="${data_subfolder}"
+			               regexp=".*data\\"
+			               replace=""
+			               global="true" />	
+		<echo>after=${data_subfolder_extract}</echo>
+					
+		<echo>Copy data files from ${data_subfolder} 
+			  to ... ${lastRemoteDir}/data/${data_subfolder_extract}</echo>
 		
+		<sshexec host="${remote_host}"
+				username="${user}"
+				password="${passphrase}"
+			  trust="true"
+				command="mkdir -p ${lastRemoteDir}/data/${data_subfolder}"/>
+	 	<scp
+	       todir="${user}@${remote_host}:${lastRemoteDir}/data/${data_subfolder}" 
+	       password="${passphrase}"
+	 	   trust="true"
+	 		sftp="true" >
+	 		<fileset id="myfileset" dir="${basedir}/../../${scenarioDataFolder}/${data_subfolder}">
+	 		       		<include name="**/*"/>
+	 		</fileset>
+	  	</scp>
+  	</target>
+ 	
 	<target name="transfer_standard" depends="queryPassword" description="Copy libs and Co to remote server">	
 		<echo>Copy lib files to ... ${remote_host}</echo>
 			
@@ -236,16 +282,15 @@
 	 		file="${local_lib_folder}/MORe.jar">
 	  	</scp>
   	</target>
-	 		       			
- 	<target name="copyConfigFiles" depends="transfer, setRemoteDir">
+ 		
+ 	<target name="createConfigFileLinks" depends="checkLastRemoteDir, queryPassword" description="Create symlinks to config file source.">
 		<sshexec host="${remote_host}"
 				username="${user}"
 				password="${passphrase}"
 			  trust="true"
-				command="mkdir ${remote_dir}/output;
+				command="mkdir ${lastRemoteDir}/config;
 						 
-						 ln -s ${remote_config_file_source}/config/data ${remote_dir}/config/data ;
-						 ln -s ${remote_config_file_source}/${remote_lib_folder_name} ${remote_dir}/${remote_lib_folder_name};
+					ln -s ${remote_config_file_source}/${remote_lib_folder_name} ${lastRemoteDir}/${remote_lib_folder_name};
 				"/>
  	</target>
 

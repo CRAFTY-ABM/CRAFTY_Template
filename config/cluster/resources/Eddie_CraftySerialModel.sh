@@ -12,6 +12,10 @@
 # Requested total running time (?) (HH:MM:SS):
 #$ -l h_rt=01:00:00
 
+# To run on TerraCorrelator:
+#$ -P geos_tc_lurg
+#$ -q ecdf@tc02
+
 # Large memory environments:
 ##$ -pe memory-5G 8
 ##$ -pe memory-40G 8
