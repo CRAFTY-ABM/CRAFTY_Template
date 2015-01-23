@@ -88,27 +88,28 @@ SinglesTargetDir = "./" + scenario + "/"
 print("Build scripts for scenario file ")
 print(scenarioFile + " (ticks " + str(startTick) + "-" + str(endTick) + ")\n")
 
-print("Run(s) from " + str(runStart) + " to " + str(numRuns) + " with " + str(numRandomSeeds) + " random seed variation(s) and offset " +  str(randomSeedStart) + " applying " + str(numRunsPerBatch) + " run(s) per invocation.")
+print("Run(s) from " + str(runStart) + " to " + str(runStart + numRuns - 1) + " with " + str(numRandomSeeds) + " random seed variation(s) and offset " +
+        str(randomSeedStart) + " applying " + str(numRunsPerBatch) + " run(s) per invocation.")
 
 if ((numRandomSeeds%numRunsPerBatch != 0) and (numRunsPerBatch % numRandomSeeds != 0)):
     print("The number of random seeds (" + numRandomSeeds + ") must be a multiplicative of the number of runs per batch (" + numRunsPerBatch + ") or vice verse!")
     exit()
 
-    
+
 # specify target file (without file ending
 torqueScriptTemplate =  "Eddie_CraftySerialModel"
 
 if os.path.exists("../" + SinglesTargetDir):
     shutil.rmtree("../" + SinglesTargetDir, ignore_errors=True)    
-os.mkdir("../" + SinglesTargetDir)
+os.makedirs("../" + SinglesTargetDir)
 
 if os.path.exists("../" + outputFolder + scenario):
     shutil.rmtree("../" + outputFolder + scenario, ignore_errors=True)    
-os.mkdir("../" + outputFolder + scenario)
+os.makedirs("../" + outputFolder + scenario)
 
 if os.path.exists("../" + outputDataFolder + "/" + scenario):
     shutil.rmtree("../" + outputDataFolder + "/" + scenario, ignore_errors=True)    
-os.mkdir("../" + outputDataFolder + "/" + scenario)
+os.makedirs("../" + outputDataFolder + "/" + scenario)
 
 
 qsubFilename = targetDir + "qsubScript_" + scenario + "_" + str(startTick) +"-" + str(endTick) + ".sh"
@@ -116,26 +117,26 @@ qsubScript = open(qsubFilename, "w")
 
 qsubScript.write("#!/bin/bash\n")
 
-runs = [None] * (numRuns - runStart) * numRandomSeeds
-randomSeeds = [None] * (numRuns - runStart) * numRandomSeeds
+runs = [None] * numRuns * numRandomSeeds
+randomSeeds = [None] * numRuns * numRandomSeeds
 
-for i in range(0, numRuns - runStart):
+for i in range(0, numRuns):
     for j in range(0, numRandomSeeds):
         runs[i*(numRandomSeeds) + j] = i + runStart
         randomSeeds[i*(numRandomSeeds) + j] = j + randomSeedStart
             
-for k in range(0, (numRuns - runStart) * numRandomSeeds, numRunsPerBatch):
-    print(k)
+for k in range(0, numRuns * numRandomSeeds, numRunsPerBatch):
+    print("Run " + str(k) + " (random seed: " + str(randomSeeds[k]) + ")")
     # adapt torque script:
     infile = open(workingDir + "resources/" + torqueScriptTemplate + ".sh", 'r')
-    outFile = open("../" + SinglesTargetDir + torqueScriptTemplate +  "_" + str(runs[k]) + ".sh", 'w')
+    outFile = open("../" + SinglesTargetDir + torqueScriptTemplate +  "_" + str(runs[k]) + "-" + str(randomSeeds[k]) + ".sh", 'w')
     inputLine =  infile.readline()
     while inputLine != "":
         inputLine = inputLine.replace("%SCENARIO_FILE%", scenarioFile)
         inputLine = inputLine.replace("%DATA_FOLDER%", dataFolder)
         inputLine = inputLine.replace("%START_TICK%", str(startTick))
         inputLine = inputLine.replace("%END_TICK%", str(endTick))
-        inputLine = inputLine.replace("%NUM_RUNS%", str(runs[k] + numRunsPerBatch))
+        inputLine = inputLine.replace("%NUM_RUNS%", str(runs[k] + numRunsPerBatch/numRandomSeeds))
         inputLine = inputLine.replace("%FIRST_RUN%", str(runs[k]))
         inputLine = inputLine.replace("%NUM_RANDOM_SEEDS%", str(numRandomSeeds) if numRunsPerBatch >= numRandomSeeds else str(numRunsPerBatch))
         inputLine = inputLine.replace("%RANDOM_SEED_OFFSET%", str(randomSeeds[k]))
@@ -144,11 +145,10 @@ for k in range(0, (numRuns - runStart) * numRandomSeeds, numRunsPerBatch):
         inputLine =  infile.readline()
     infile.close()
     outFile.close()
-    
-    qsubScript.write("qsub " + SinglesTargetDir  + torqueScriptTemplate +  "_" + str(runs[k]) + ".sh\n")
+    qsubScript.write("mkdir -p ./output/" + scenario + "/" + str(runs[k]) + "-" + str(randomSeeds[k]) + "\n")
+    qsubScript.write("qsub " + SinglesTargetDir  + torqueScriptTemplate +  "_" + str(runs[k]) + "-" + str(randomSeeds[k]) + ".sh\n")
 
 qsubScript.close()
 
 st = os.stat(qsubFilename)
 os.chmod(qsubFilename, st.st_mode | stat.S_IEXEC)
-    
