@@ -136,7 +136,7 @@ for k in range(0, numRuns * numRandomSeeds, numRunsPerBatch):
         inputLine = inputLine.replace("%DATA_FOLDER%", dataFolder)
         inputLine = inputLine.replace("%START_TICK%", str(startTick))
         inputLine = inputLine.replace("%END_TICK%", str(endTick))
-        inputLine = inputLine.replace("%NUM_RUNS%", str(runs[k] + numRunsPerBatch/numRandomSeeds + 1 ))
+        inputLine = inputLine.replace("%NUM_RUNS%", str(runs[k] + numRunsPerBatch/numRandomSeeds))
         inputLine = inputLine.replace("%FIRST_RUN%", str(runs[k]))
         inputLine = inputLine.replace("%NUM_RANDOM_SEEDS%", str(numRandomSeeds) if numRunsPerBatch >= numRandomSeeds else str(numRunsPerBatch))
         inputLine = inputLine.replace("%RANDOM_SEED_OFFSET%", str(randomSeeds[k]))

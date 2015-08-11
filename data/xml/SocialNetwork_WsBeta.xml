@@ -1,6 +1,6 @@
 <socialNetworks>
 	<socialNetwork name="SocialNetwork-WSBeta">
-		<networkGeneratorClass>de.cesr.more.building.network.MWattsBetaSwMilieuBuilder</networkGeneratorClass>
+		<networkGeneratorClass>de.cesr.more.building.network.MWattsBetaSwNetworkService</networkGeneratorClass>
 		
 		<Integer param="de.cesr.more.param.MRandomPa:RANDOM_SEED_NETWORK_BUILDING">42</Integer>
 		<String  param="de.cesr.more.param.MNetworkBuildingPa:MILIEU_NETWORK_CSV_COLUMNPREFIX">de.cesr.more.param.</String>
