@@ -1,10 +1,15 @@
 '''
+
+Create Grid Engine scripts to run CRAFTY on a linux cluster.
+
 Created on 08.03.2014
+Latest update on 05/06/2015
 
 @author: Sascha Holzhauer
 '''
 
 import sys, os, shutil, stat
+import time
 from optparse import OptionParser
 
 workingDir = "./"
@@ -12,9 +17,8 @@ targetDir = "../"
 
 numRunsPerBatch = 1
 
-scenarioFile = "xml/baseline/Scenario.xml"
+scenarioFile = "Scenario.xml"
 dataFolder   = "./data/"
-outputFolder = "./"
 outputDataFolder = "./output"
 
 startTick   = 2000
@@ -30,8 +34,13 @@ randomSeedStart = 0
 
 scenario    = "Scenario"
 
+clusterMode       = "ParallelTC"
 
-parser = OptionParser(usage="usage: %prog [options]", version="%prog 1.0")
+# specify target file (without file ending
+torqueScriptTemplate =  "Eddie_Crafty_" + clusterMode
+
+
+parser = OptionParser(usage="usage: %prog [options]", version="%prog 1.1")
 
 parser.add_option("-d", "--directory", dest="data", default=dataFolder,
                   help="Location of data directory (default: %default)", metavar="DATA DIRECTORY")
@@ -63,8 +72,12 @@ parser.add_option("-b", "--batchSize", dest="numRunsPerBatch", default=numRunsPe
 parser.add_option("-t", "--scenarioTitle", dest="scenarioName", default=scenario,
                   help="Name of the output folder (default: %default)", metavar="TITLE")
 
-(options, args) = parser.parse_args()
+parser.add_option("-m", "--clusterMode", dest="clusterMode", default=clusterMode,
+                  help="Cluster setting to apply - usually one of Serial/SerialTC/Parallel/ParallelTC (default: %default)", metavar="MODE")
 
+parser.add_option("-i", "--integrateResultsFolder", dest="integrateResultsFolder", action="store_true", default=False,
+                  help="If specified, the results are integrated into a potentially existing result folder. Use with care since an existing folder with the same runid would be overwritten (default: %default)")
+(options, args) = parser.parse_args()
 
 dataFolder      = options.data
 scenarioFile    = options.filename
@@ -91,28 +104,29 @@ print(scenarioFile + " (ticks " + str(startTick) + "-" + str(endTick) + ")\n")
 print("Run(s) from " + str(runStart) + " to " + str(runStart + numRuns - 1) + " with " + str(numRandomSeeds) + " random seed variation(s) and offset " +
         str(randomSeedStart) + " applying " + str(numRunsPerBatch) + " run(s) per invocation.")
 
+if options.integrateResultsFolder:
+    print("Integrate into existing output folder (if existing).")
+    
 if ((numRandomSeeds%numRunsPerBatch != 0) and (numRunsPerBatch % numRandomSeeds != 0)):
     print("The number of random seeds (" + numRandomSeeds + ") must be a multiplicative of the number of runs per batch (" + numRunsPerBatch + ") or vice verse!")
     exit()
 
-    
-# specify target file (without file ending
-torqueScriptTemplate =  "Eddie_CraftySerialModel"
-
-if os.path.exists("../" + SinglesTargetDir):
-    shutil.rmtree("../" + SinglesTargetDir, ignore_errors=True)    
-os.makedirs("../" + SinglesTargetDir)
-
-if os.path.exists("../" + outputFolder + scenario):
-    shutil.rmtree("../" + outputFolder + scenario, ignore_errors=True)    
-os.makedirs("../" + outputFolder + scenario)
-
-if os.path.exists("../" + outputDataFolder + "/" + scenario):
-    shutil.rmtree("../" + outputDataFolder + "/" + scenario, ignore_errors=True)    
-os.makedirs("../" + outputDataFolder + "/" + scenario)
 
 
-qsubFilename = targetDir + "qsubScript_" + scenario + "_" + str(startTick) +"-" + str(endTick) + ".sh"
+if not os.path.exists("../" + SinglesTargetDir):
+    os.makedirs("../" + SinglesTargetDir)
+
+if not options.integrateResultsFolder:
+    if os.path.exists("../" + outputDataFolder + "/" + scenario):
+        timestr = time.strftime("%Y-%m-%d") # if day changes between executions of os.path.exists and os.rename and the next day already exists ;-) ...
+        if os.path.exists("../" + outputDataFolder + "/" + scenario + "_" + time.strftime("%Y-%m-%d")):
+            os.rename("../" + outputDataFolder + "/" + scenario, "../" + outputDataFolder + "/" + scenario + "_" + time.strftime("%Y-%m-%d_%H-%M"),)
+        else:
+            os.rename("../" + outputDataFolder + "/" + scenario, "../" + outputDataFolder + "/" + scenario + "_" + timestr,)    
+    os.makedirs("../" + outputDataFolder + "/" + scenario)
+
+
+qsubFilename = targetDir + "qsubScript_" + scenario + "_" + str(startTick) +"-" + str(endTick) + "_" + str(runStart) + ".sh"
 qsubScript = open(qsubFilename, "w")
 
 qsubScript.write("#!/bin/bash\n")
