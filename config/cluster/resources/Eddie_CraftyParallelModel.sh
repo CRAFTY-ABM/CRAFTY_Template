@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Job Name:
-#$ -N CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%
+#$ -N CRAFTY_%SCENARIONAME%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%
 
 # Execute the job from the current working directory
 #$ -cwd
@@ -21,12 +21,12 @@
 #$ -l h_vmem=42000M
 
 # Name of output files:
-#$ -o ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.out
-#$ -e ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.err
+#$ -o ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIONAME%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.out
+#$ -e ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIONAME%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.err
 
 # Send mail when job is aborted or terminates
 #$ -m ae
-#$ -M Sascha.Holzhauer@ed.ac.uk
+#$ -M TEMPLATE@TEMPLATE
 
 echo "####################################################"
 echo "Job started on " `hostname` `date`
@@ -39,13 +39,13 @@ module load openmpi-gcc
 module load R/3.0.1
 
 export LD_PRELOAD=$JAVA_HOME/jre/lib/amd64/libjsig.so
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/exports/work/geos_lurg/sholzhau/mpiJava/lib
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/users/0022/sholzhau/R/R-3.0.0/library/rJava/jri
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/exports/work/geos_lurg/TEMPLATE/mpiJava/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/users/TEMPLATE/R/R-3.0.0/library/rJava/jri
 
 mkdir -p ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%
 
 # Start des Jobs:
-mpirun -np 8 -output-filename output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET% java -classpath ./config/log/ -Xmx35g -Dlog4j.configuration=./config/log/log4j_cluster.properties -jar CRAFTY-VolanteEurope.jar -f "%SCENARIO_FILE%" -d "%DATA_FOLDER%" -s %START_TICK% -e %END_TICK% -n %NUM_RUNS% -sr %FIRST_RUN% -r %NUM_RANDOM_SEEDS% -o %RANDOM_SEED_OFFSET%
+mpirun -np 8 -output-filename output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET% java -classpath ./config/log/ -Xmx35g -Dlog4j.configuration=./config/log/log4j_cluster.properties -jar CRAFTY-TEMPLATE.jar -f "%SCENARIO_FILE%" -d "%DATA_FOLDER%" -s %START_TICK% -e %END_TICK% -n %NUM_RUNS% -sr %FIRST_RUN% -r %NUM_RANDOM_SEEDS% -o %RANDOM_SEED_OFFSET%
 
 echo "##########################################################"
 echo "Job finished: " `date`
