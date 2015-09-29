@@ -42,7 +42,7 @@
  	 	
  	
  	<property name="user" value="TEMPLATE"/>
- 	<property name="remote_base_dir" value="sholzhau/CRAFTY-ConsVis-A"/>
+ 	<property name="remote_base_dir" value="TEMPLATE"/>
  	<property name="remote_base_dir_prefix" value="/exports/work/geos_lurg/"/>
  	<!--property name="remote_base_dir" value="/exports/work/scratch/sholzhau/"/-->
  	<!--property name="remote_base_dir" value="/exports/work/scratch/s/"/-->

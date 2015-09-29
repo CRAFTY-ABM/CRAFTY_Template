@@ -15,8 +15,9 @@
 			<curve class="com.moseph.modelutils.curve.LinearFunction" a="0.0" b="3.0" />
 		</curve>
 	</competition>
+	
+	<pmParameterFile>xml/ParMaParameter.xml</pmParameterFile>
 
 	<demand class="org.volante.abm.example.RegionalDemandModel" demandCSV="csv/Demand1.csv"/>
-	<socialNetworkParamFile>xml/SocialNetwork_WsBeta.xml</socialNetworkParamFile>
 	<agentFile>xml/Agents.xml</agentFile>
 </region>
