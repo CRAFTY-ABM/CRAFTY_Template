@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Job Name:
-#$ -N CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%
+#$ -N CRAFTY_%SCENARIONAME%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%
 
 # Execute the job from the current working directory
 #$ -cwd
@@ -28,8 +28,8 @@
 ##$ -l h_vmem=5200M
 
 # Name of output files:
-#$ -o ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.out
-#$ -e ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIO%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.err
+#$ -o ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIONAME%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.out
+#$ -e ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%/CRAFTY_%SCENARIONAME%_%FIRST_RUN%-%RANDOM_SEED_OFFSET%.err
 
 # Send mail when job is aborted or terminates
 #$ -m ae

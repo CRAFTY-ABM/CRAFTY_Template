@@ -1,0 +1,15 @@
+<decisonConfigurations>
+	<dConfig>
+		<id>FrSelection</id>
+		<preference>Pref1</preference>
+		<preference>Pref2</preference>
+		<preference>Pref3</preference>
+		<singleSelectedBoExpected>true</singleSelectedBoExpected>
+	</dConfig>
+	<dConfig>
+		<id>InnovationAdoption</id>
+		<preference>Pref1</preference>
+		<preference>Pref2</preference>
+		<singleSelectedBoExpected>true</singleSelectedBoExpected>
+	</dConfig>
+</decisonConfigurations>

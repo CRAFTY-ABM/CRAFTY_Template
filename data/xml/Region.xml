@@ -17,6 +17,15 @@
 	</competition>
 
 	<demand class="org.volante.abm.example.RegionalDemandModel" demandCSV="csv/Demand1.csv"/>
+	
 	<socialNetworkParamFile>xml/SocialNetwork_WsBeta.xml</socialNetworkParamFile>
-	<agentFile>xml/Agents.xml</agentFile>
+	
+	<frFile>xml/FunctionalRoles.xml</frFile>
+	<btFile>xml/BehaviouralTypes.xml</btFile>
+	
+	<regionalLaraModel>
+		<Boolean param="de.cesr.lara.components.param.LBasicPa:EVENTBUS_FORCE_SEQUENTIAL">true</Boolean>
+		<String param="de.cesr.lara.toolbox.param.LXmlConfigPa:XML_PATH_PREFERENCES">xml/LaraPreferences.xml</String>
+		<String param="de.cesr.lara.toolbox.param.LXmlConfigPa:XML_PATH_DCONFIG">xml/LaraDecisionConfigurations.xml</String>
+	</regionalLaraModel>
 </region>
