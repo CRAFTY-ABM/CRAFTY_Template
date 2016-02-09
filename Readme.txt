@@ -12,6 +12,9 @@ Currently known files are:
 ./config/cluster/resources/Eddie_CraftySerialModel.sh
 ./config/cluster/resources/Eddie_CraftyParallelModel.sh
 
+To launch the application, execute the ./config/launcher/Crafty Template Basic.launch 
+run configuration (rightclick on that file > "Run as..." > "Crafty Template Basic"
+
 
 If you have any further questions don't hesitate to contact
 Sascha.Holzhauer@ed.ac.uk 
