@@ -10,24 +10,25 @@
 ################################################################################
 
 ### Clean/Remove existing definitions ##########################################
-rm(list=ls(all=TRUE))
-rm(list=ls(all=TRUE, envir=globalenv()), envir=globalenv())
+rm(list=ls(pattern="[^{preserve}]", envir=globalenv()), envir=globalenv())
+
 
 ### Project Root ###############################################################
-simp$dirs$project			<- "C:/Data/LURG/workspace/TEMPLATE/"
+project			<- "PATH-TO-PROJECT"
 
 #### Load default SIMP #########################################################
-source(paste(simp$dirs$project, "/config/R/simpBasic.R", sep=""))
+source(paste(project, "/config/R/simpBasic.R", sep=""))
+simp$dirs$project <- project
 
 #### Set path to itself ########################################################
 simp$simpDefinition <- paste(simp$dirs$project, "config/R/simp-machine_cluster.R", sep="")
 
 ### Directories ###############################################################
-simp$dirs$project			<- "TEMPLATE/"
+
 simp$dirs$data 				<- paste(simp$dirs$project, "data/", sep="")
 simp$dirs$simp				<- paste(simp$dirs$project, "./config/R/", sep="")
 
-simp$dirs$outputdir			<- paste(simp$dirs$project, "/Output/", sep="")
+simp$dirs$outputdir			<- paste(simp$dirs$project, "/output/", sep="")
 
 simp$dirs$output$simulation	<- paste(simp$dirs$outputdir, "Data/", sep="")
 simp$dirs$output$data		<- paste(simp$dirs$outputdir, "Data/", sep="")

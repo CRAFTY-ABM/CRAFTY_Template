@@ -23,20 +23,7 @@ simp$sim$id 					<- "A1-0"
 
 
 ### Directories ################################################################
-simp$dirs$outputdir			<- paste(simp$dirs$project,	"TEMPLATE/Output", sep="")
-
-simp$dirs$output$simulation	<- paste(simp$dirs$outputdir, "Data/", sep="")
-simp$dirs$output$data		<- paste(simp$dirs$outputdir, "Data/", sep="")
-simp$dirs$output$rdata		<- paste(simp$dirs$outputdir, "RData/", sep="") 
-simp$dirs$output$raster		<- paste(simp$dirs$outputdir, "Raster/", sep="") 
-simp$dirs$output$figures	<- paste(simp$dirs$outputdir, "Figures/", sep="")
-simp$dirs$output$reports	<- paste(simp$dirs$outputdir, "Reports/", sep="")
-simp$dirs$output$tables		<- paste(simp$dirs$outputdir, "/Tables/", sep="")
-simp$dirs$output$csv		<- paste(simp$dirs$outputdir, "/CSV/", sep="")
-simp$dirs$output$runinfo	<- paste("TEMPLATE/CRAFTY_Runs.ods")
-
-simp$dirs$data				<-  paste(simp$dirs$project, "data/", version, sep="") 
-
+simp = shbasic::shbasic_adjust_outputfolders(simp, pattern = "%VFOLDER%", value = simp$sim$folder)
 
 ### Figure Settings ############################################################
 simp$fig$resfactor		<- 3

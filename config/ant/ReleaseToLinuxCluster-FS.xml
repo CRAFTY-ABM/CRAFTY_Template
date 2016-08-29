@@ -7,7 +7,7 @@
 		NOTE
 		- User-specific properties are stored in local.properties, which needs to be adjusted and 
 		  should not be comitted!
-		- You probabliy need to adapt the remote directory (which normally includes a username): "remote_base_dir"
+		- You probably need to adapt the remote directory (which normally includes a username): "remote_base_dir"
 	 -->
  
  	<property file="../../project.properties"/>
@@ -171,7 +171,7 @@
 	        duplicate="add"
 	        manifest="${basedir}/../${manifest_file}">
 	       <manifest>
-	            <attribute name="Built-By" value="${jarFileBuilder}"/>
+	            <attribute name="Built-By" value="${jarFileBuilderName}"/>
 	            <attribute name="Implementation-Version"  value="${release}"/>
 	            <attribute name="Built-Date" value="${TODAY}"/>
 	        </manifest>

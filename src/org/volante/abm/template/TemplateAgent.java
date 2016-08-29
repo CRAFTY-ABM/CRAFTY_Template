@@ -3,14 +3,15 @@
  */
 package org.volante.abm.template;
 
-import org.volante.abm.agent.DefaultAgent;
+
+import org.volante.abm.agent.DefaultLandUseAgent;
 import org.volante.abm.data.ModelData;
 
 /**
  * @author Sascha Holzhauer
  *
  */
-public class TemplateAgent extends DefaultAgent {
+public class TemplateAgent extends DefaultLandUseAgent {
 
 	/**
 	 * @param id

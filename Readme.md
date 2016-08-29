@@ -25,7 +25,9 @@ Currently known files are:
 ./config/ant/ReleaseToLinuxCluster-FS.xml
 ./config/cluster/resources/Eddie_CraftySerialModel.sh
 ./config/cluster/resources/Eddie_CraftyParallelModel.sh
+./config/launcher/Crafty Template CoBRA.launch (substitute all occurrences of CRAFTY_TemplateCoBRA by your project name)
 files in ./config/R
+
 
 ## Default Configuration
 
@@ -37,7 +39,7 @@ world:		CUSTOMIZE-WORLD
 scenario:	CUSTOMIZE-SCENARIO
 FRs:		FR1, FR2, FR3
 BTs:		Cognitor, Innovator
-Preferences:Pref1, Pref2, Pref3
+Preferences:Competitiveness, SocialApproval, NeighbourApproval
 Capitals:	Cap1, Cap2, Cap3
 Services:	Service1, Service2, Service3
 
@@ -45,6 +47,12 @@ Services:	Service1, Service2, Service3
 The default configuration should work as is and simulates a single region via Region.xml. 
 In case you like to use several regions (4 per default) change World_XML.xml to World_CSV.xml 
 in the file data/xml/Scenario.xml.
+
+## Test Run
+
+Right click the file './config/launcher/Crafty Template CoBRA.launch' and choose 'Run as...' > <First entry>
+Note: you need to substitute the project name first (see above)!
+
 
 ## ReleaseToLinuxCluster
 

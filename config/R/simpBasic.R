@@ -35,7 +35,6 @@ simp$dirs$output$figures	<- paste(simp$dirs$outputdir, "Figures/", sep="")
 simp$dirs$output$reports	<- paste(simp$dirs$outputdir, "Reports/", sep="")
 
 ### CSV Column Names ###########################################################
-simp$csv <- list()
 simp$csv$cname_region 		<- "Region"
 simp$csv$cname_tick 		<- "Tick"
 simp$csv$cname_aft 			<- "Agent"

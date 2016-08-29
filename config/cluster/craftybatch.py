@@ -108,7 +108,7 @@ if options.integrateResultsFolder:
     print("Integrate into existing output folder (if existing).")
     
 if ((numRandomSeeds%numRunsPerBatch != 0) and (numRunsPerBatch % numRandomSeeds != 0)):
-    print("The number of random seeds (" + numRandomSeeds + ") must be a multiplicative of the number of runs per batch (" + numRunsPerBatch + ") or vice verse!")
+    print("The number of random seeds (" + str(numRandomSeeds) + ") must be a multiplicative of the number of runs per batch (" + str(numRunsPerBatch) + ") or vice verse!")
     exit()
 
 
@@ -126,7 +126,7 @@ if not options.integrateResultsFolder:
     os.makedirs("../" + outputDataFolder + "/" + scenario)
 
 
-qsubFilename = targetDir + "qsubScript_" + scenario.replace("/", "-") + "_" + str(startTick) +"-" + str(endTick) + "_" + str(runStart) + ".sh"
+qsubFilename = targetDir + "qsubScript_" + scenario.replace("/", "-") + "_" + str(startTick) +"-" + str(endTick) + "_" + str(runStart) + "_" + str(randomSeedStart)+ ".sh"
 qsubScript = open(qsubFilename, "w")
 
 qsubScript.write("#!/bin/bash\n")
@@ -150,7 +150,7 @@ for k in range(0, numRuns * numRandomSeeds, numRunsPerBatch):
         inputLine = inputLine.replace("%DATA_FOLDER%", dataFolder)
         inputLine = inputLine.replace("%START_TICK%", str(startTick))
         inputLine = inputLine.replace("%END_TICK%", str(endTick))
-        inputLine = inputLine.replace("%NUM_RUNS%", str(runs[k] + numRunsPerBatch/numRandomSeeds))
+        inputLine = inputLine.replace("%NUM_RUNS%", str(runs[k] + max(1, numRunsPerBatch/numRandomSeeds)))
         inputLine = inputLine.replace("%FIRST_RUN%", str(runs[k]))
         inputLine = inputLine.replace("%NUM_RANDOM_SEEDS%", str(numRandomSeeds) if numRunsPerBatch >= numRandomSeeds else str(numRunsPerBatch))
         inputLine = inputLine.replace("%RANDOM_SEED_OFFSET%", str(randomSeeds[k]))

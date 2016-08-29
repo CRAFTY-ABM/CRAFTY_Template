@@ -1,7 +1,6 @@
 <scenario startTick="2000" endTick="2003" world="CUSTOMIZE-WORLD" scenario="CUSTOMIZE-SCENARIO">
 	<capitals class="org.volante.abm.serialization.CSVCapitalLoader" file="csv/Capitals.csv" indexed="true"/>
 	<services class="org.volante.abm.serialization.CSVServiceLoader" file="csv/Services.csv" indexed="true"/>
-	<landUses class="org.volante.abm.serialization.CSVLandUseLoader" file="csv/LandUses.csv" indexed="true"/>
 	<outputs outputDirectory="output/%v/%w/%k/%s/%i/%r" filePattern="%s-%i-%r-%o" tickPattern="%s-%i-%r-%o-%y" >
 		<output class="org.volante.abm.output.DisplayVideoWriter" includeSurroundings="true" imagesPerFrame="2" height="500" width="700">
 			<display class="org.volante.abm.template.visualisation.TestAgents" title="AgentTypesVideo"/>

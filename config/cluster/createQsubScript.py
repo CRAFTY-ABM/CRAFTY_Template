@@ -36,7 +36,7 @@ task        = options.task
 templatefile= options.templatefile
 
 infile  = open(templatefile, 'r')
-outFile = open("../config/R/" + versiondir + "/cluster/" + task + "/" + outputfile, 'w')
+outFile = open("./config/R/" + versiondir + "/cluster/" + task + "/" + outputfile, 'w')
 inputLine =  infile.readline()
 while inputLine != "":
     inputLine = inputLine.replace("%VERSIONDIR%", versiondir)
