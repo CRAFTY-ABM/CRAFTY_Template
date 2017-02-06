@@ -7,6 +7,7 @@ However, depending on your model it might be a better idea to start from another
 
 When you checked out the template from the repository, make sure to disconnect the project and optionally share 
 it with another repository (otherwise you'd mess up the template when committing if you're allowed to):
+
 * In eclipse, right-click the checked out project > Team > Disconnect
 * Delete the .hg folder in the project folder
 * In eclipse, right-click the checked out project > Team > Share Project ...

@@ -27,7 +27,7 @@ opt	<- optparse::parse_args(optparse::OptionParser(option_list=option_list))
 # Usually also in simp.R, but required here to find simp.R
 simp$sim$folder 	<- "parentFolder/_version"	
 
-simp$sim$task		<- paste(opt$run, opt$seed, sep="-") # Name of surounding folder, usually a description of task 
+simp$sim$task		<- paste(opt$firstrun, opt$seedoffset, sep="-") # Name of surounding folder, usually a description of task 
 
 preserve <- list()
 preserve$task 		<- simp$sim$task
@@ -47,7 +47,7 @@ for (run in runs) {
 		
 		preserve$run = run
 		preserve$seed = rseed
-		
+		preserve$task <- paste(preserve$run, preserve$seed, sep="-")
 		
 		simp$sim$scenario				<- "A1"
 		simp$sim$runids 	<- c(paste(run, rseed, sep="-"))			# run to deal with

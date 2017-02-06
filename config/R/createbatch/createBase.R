@@ -17,12 +17,10 @@ simp$paramcreation$startrun <- 0
 ## adapt parameters in scripts
 
 
-# uncomment when AFT production params deviate from base settings:
-#source("./createAftProductionCSV.R")
-
-# uncomment when AFT params deviate from base settings:
-#source("./createAftParamCSV.R")
-
+## create basic configuration:
+#source("./createAftMultifunctionalProductivityManual.R")
+source("./createAftProductionCSV.R")
+source("./createAftParamCSV.R")
 source("./create1by1RunCSV.R")
 
 ## generate basic social network configurations using python script

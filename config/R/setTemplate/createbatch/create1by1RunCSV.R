@@ -40,7 +40,7 @@ for (percentageTakeOvers in simp$batchcreation$percentage_takeovers) {
 			data["RegionCsvFile"] 	<- paste("/", simp$batchcreation$versiondirs$worldfile, "/worlds/",
 					simp$sim$worldname, "/regionalisations/", regionalisation, ".csv", sep="")
 			
-			data["Agent_xml"] 		<- paste("/", simp$batchcreation$versiondirs$agentdef, "/agents/Agents_", 
+			data["FR_xml"] 		<- paste("/", simp$batchcreation$versiondirs$agentdef, "/agents/FunctionalRoles_", 
 					simp$batchcreation$variationstages[mode], ".xml", sep="")
 			
 			data["Competition_xml"] <- paste("/", simp$batchcreation$versiondirs$competition, "/competition/", 

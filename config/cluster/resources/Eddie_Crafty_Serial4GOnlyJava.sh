@@ -39,7 +39,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/users/sholzhau/R/R-3.0.0/library/r
 mkdir -p ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%
 
 # Start des Jobs:
-java -classpath ./config/log/ -Xmx1500m -Dlog4j.configuration=./config/log/log4j_cluster.properties -jar CRAFTY_CoBRA_NetSens.jar -f "%SCENARIO_FILE%" -d "%DATA_FOLDER%" -s %START_TICK% -e %END_TICK% -n %NUM_RUNS% -sr %FIRST_RUN% -r %NUM_RANDOM_SEEDS% -o %RANDOM_SEED_OFFSET%
+java -classpath ./config/log/ -Xmx1500m -Dlog4j.configuration=./config/log/log4j_cluster.properties -jar CRAFTY_TEMPLATE.jar -f "%SCENARIO_FILE%" -d "%DATA_FOLDER%" -s %START_TICK% -e %END_TICK% -n %NUM_RUNS% -sr %FIRST_RUN% -r %NUM_RANDOM_SEEDS% -o %RANDOM_SEED_OFFSET%
 
 echo "##########################################################"
 echo "Job finished: " `date`

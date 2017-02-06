@@ -120,7 +120,7 @@ for (aft in afts) {
 			}
 		}
 	}	
-	filename = paste(simp$batchcreation$inputdatadir, "/", simp$sim$folder, '/worlds/', simp$sim$worldname,
+	filename = paste(simp$batchcreation$inputdatadir, '/worlds/', simp$sim$worldname,
 			'/AftParams_', aft, '.csv', sep='')
 	
 	futile.logger::flog.info("Write AFT param file %s...",

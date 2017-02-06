@@ -24,8 +24,7 @@ simp$sim$scenario			<- "A1"
 simp$sim$regionalisation	<- "26"
 simp$sim$regions			<- c("A")
 simp$sim$runids				<- c("0-0")
-simp$sim$filepartorder 		<- c("runid", "D", "tick", "D", "regions", "D", "datatype")
-simp$sim$hasregiondir		<- FALSE
+simp$sim$hasregiondir		<- TRUE
 
 ### Directories ################################################################
 simp$dirs$output$data		<- paste(simp$dirs$outputdir, "Data/", sep="")

@@ -42,7 +42,7 @@ mkdir -p ./output/%SCENARIO%/%FIRST_RUN%-%RANDOM_SEED_OFFSET%
 java -classpath ./config/log/ -Xmx1500m -Dlog4j.configuration=./config/log/log4j_cluster.properties -jar CRAFTY_TEMPLATE.jar -f "%SCENARIO_FILE%" -d "%DATA_FOLDER%" -s %START_TICK% -e %END_TICK% -n %NUM_RUNS% -sr %FIRST_RUN% -r %NUM_RANDOM_SEEDS% -o %RANDOM_SEED_OFFSET%
 
 echo "########## Start R Scripts...#######################"
-Rscript ./config/R/%SCENARIO%/cluster/common/process.R "--firstrun=%FIRST_RUN%" "--numrun=%NUM_RUNS%" "--seedoffset=%RANDOM_SEED_OFFSET%" "--numrandomseeds=%NUM_RANDOM_SEEDS%" "--noreport"
+Rscript ./config/R/%SCENARIO%/cluster/common/process.R "--run=%FIRST_RUN%" "--seed=%RANDOM_SEED_OFFSET%"
 
 echo "##########################################################"
 echo "Job finished: " `date`

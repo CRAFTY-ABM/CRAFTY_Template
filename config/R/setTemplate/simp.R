@@ -39,18 +39,13 @@ simp$fig$facetlabelsize <- 14
 ### Batch Run Creation Settings #################################################
 simp$batchcreation$scenarios				<- c("A1", "B1")
 simp$batchcreation$startrun 				<- 0
-simp$batchcreation$regionalisations			<- c("26")
-simp$batchcreation$modes					<- c("plain", "complex")
+simp$batchcreation$regionalisations			<- c("2")
 simp$batchcreation$percentage_takeovers 	<- c(30) 
-simp$batchcreation$competitions 			<- c("plain" = "Competition_linear.xml", 
-												"complex" = "Competition_linear.xml")
-simp$batchcreation$institutions				<- c("plain"="institutions/Institutions_CapitalDynamics.xml", 
-												"complex" = "institutions/Institutions_CapitalDynamics.xml | 
-															/institutions/Institution_VariableCapital.xml")
+simp$batchcreation$competition 				<- "Competition_linear.xml"
+simp$batchcreation$institutions				<- "institutions/Institutions_CapitalDynamics.xml"
 simp$batchcreation$multifunctionality 		<- c("plain" = "mono", "complex"= "multi")
 simp$batchcreation$allocation				<- c("BestProductionFirstGiveUpGiveInAllocationModel.xml")
-											
-simp$batchcreation$variationstages 			<- c("plain" = "homo", "complex"= "hetero")
+
 simp$batchcreation$socialnetwork 			<- "SocialNetwork_HDFF.xml"
 simp$batchcreation$searchabilities			<- c(30)
 simp$batchcreation$inputdatadir 			<- sprintf("%s/data/%s", simp$dirs$project, simp$sim$folder)

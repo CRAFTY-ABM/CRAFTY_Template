@@ -9,9 +9,9 @@ simp$sim$folder 	<- "parentFolder/_version"
 setwd(paste(simp$dirs$simp, sep="/"))
 source(paste(simp$dirs$simp, simp$sim$folder, "simp.R", sep="/"))
 
-simp$sim$runids 	<- c(paste(preserve$run, "-0", sep=""))	# run to deal with
-simp$sim$id			<- c(paste(preserve$run, "-0", sep=""))	# ID to identify specific data collections (e.g. regions)
-simp$sim$task		<- c(paste(preserve$run, "-0", sep=""))	# Name of surrounding folder, usually a description of task 
+simp$sim$runids 	<- c(paste(preserve$run, "-", preserve$seed, sep=""))	# run to deal with
+simp$sim$id			<- c(paste(preserve$run, "-", preserve$seed, sep=""))	# ID to identify specific data collections (e.g. regions)
+simp$sim$task		<- c(paste(preserve$run, "-", preserve$seed, sep=""))	# Name of surrounding folder, usually a description of task 
 
 simp$fig$init <- function(simp, outdir, filename) {}
 simp$fig$close<- function() {}
@@ -185,20 +185,20 @@ hl_aggregate_aftcompetitiveness(simp, dataname = "dataAggregateAFTCompetitivenes
 @
 
 
-\newpage
-\subsubsection{Pre-Allocation Competitiveness Distributions: Overview}
-\label{preAllocCompetitivenessLines}
-<<preAllocCompetitiveness, fig.cap = "Pre-Allocation Competitiveness">>=
-hl_competitiveness_prealloc(simp, dataname = "csv_preAllocTable", 
-	maxcompetitiveness = "90%", numbins = 15)
-@
-
-\subsubsection{Pre-Allocation Competitiveness Distributions}
-<<compdist>>=
-hl_competitiveness_preallocPerAft(simp, dataname = "csv_preAllocTable",  facet_ncol = 4,
-		maxcompetitiveness = "100%", numbins = 40, title = "Pre-Allocation Competitiveness", 
-		setfigdims = FALSE, checkexists=FALSE, ggplotaddon = ggplot2::theme(axis.text.x=element_text(angle=90)))
-@
+%\newpage
+%\subsubsection{Pre-Allocation Competitiveness Distributions: Overview}
+%\label{preAllocCompetitivenessLines}
+%<<preAllocCompetitiveness, fig.cap = "Pre-Allocation Competitiveness">>=
+%hl_competitiveness_prealloc(simp, dataname = "csv_preAllocTable", 
+%	maxcompetitiveness = "90%", numbins = 15)
+%@
+%
+%\subsubsection{Pre-Allocation Competitiveness Distributions}
+%<<compdist>>=
+%hl_competitiveness_preallocPerAft(simp, dataname = "csv_preAllocTable",  facet_ncol = 4,
+%		maxcompetitiveness = "100%", numbins = 40, title = "Pre-Allocation Competitiveness", 
+%		setfigdims = FALSE, checkexists=FALSE, ggplotaddon = ggplot2::theme(axis.text.x=element_text(angle=90)))
+%@
 
 \newpage
 \subsubsection{AFT TakeOvers (GU + GI)}
@@ -279,13 +279,13 @@ hl_regions_aftcomposition(simp, dataname = "dataAgg", facet_ncol = 4)
 hl_competitivenessPerRegion(simp, dataname = "dataAgg")
 @
 
-\subsubsection{Regional AFT Connectedness}
-<<regionalconnect, fig.height=3.5>>=
-simp$sim$filepartorder	<- c("regions", "D", "datatype")
-hl_connectedness(simp, dataname = "csv_aggregated_connectivity", 
-		datatype = "LandUseConnectivity", aftcolumns = simp$mdata$aftNames[-1],
-		percent = NULL)
-@
+%\subsubsection{Regional AFT Connectedness}
+%<<regionalconnect, fig.height=3.5>>=
+%simp$sim$filepartorder	<- c("regions", "D", "datatype")
+%hl_connectedness(simp, dataname = "csv_aggregated_connectivity", 
+%		datatype = "LandUseConnectivity", aftcolumns = simp$mdata$aftNames[-1],
+%		percent = NULL)
+%@
 
 \newpage
 \subsection{Map Data}

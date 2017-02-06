@@ -9,8 +9,8 @@
 		
 		<agentProperty name="EXPERIENCE">10</agentProperty>
 		
-		<laraAgentConfigurator class="de.cesr.lara.toolbox.config.xml.LXmlAgentConfigurator">
-			<bofile>./pas/frselectionpas.xml</bofile>
+		<laraAgentConfigurator class="org.volante.abm.lara.CobraLaraXmlAgentConfigurator">
+			<bofile>./pas/FrSelectionPas.xml</bofile>
 			
 			<preferenceWeight pref="Competitiveness">1.0</preferenceWeight>
 			<preferenceWeight pref="SocialApproval">1.0</preferenceWeight>
@@ -74,8 +74,8 @@
 				<dcId>Innovation</dcId>
 			</trigger>
 		</triggers>
-		<laraAgentConfigurator class="de.cesr.lara.toolbox.config.xml.LXmlAgentConfigurator">
-			<bofile>./pas/frselectionpas.xml</bofile>
+		<laraAgentConfigurator class="org.volante.abm.lara.CobraLaraXmlAgentConfigurator">
+			<bofile>./pas/FrSelectionPas.xml</bofile>
 			
 			<preprocessorConfigurator>
 				<selectorEntry>

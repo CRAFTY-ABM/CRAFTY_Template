@@ -2,9 +2,10 @@
 	<capitals class="org.volante.abm.serialization.CSVCapitalLoader" file="csv/Capitals.csv" indexed="true"/>
 	<services class="org.volante.abm.serialization.CSVServiceLoader" file="csv/Services.csv" indexed="true"/>
 	<outputs outputDirectory="output/%v/%w/%k/%s/%i/%r" filePattern="%s-%i-%r-%o" tickPattern="%s-%i-%r-%o-%y" >
-		<output class="org.volante.abm.output.DisplayVideoWriter" includeSurroundings="true" imagesPerFrame="2" height="500" width="700">
+		<!--  The DisplayVideoWriter does not work at every platform -->
+		<!-- output class="org.volante.abm.output.DisplayVideoWriter" includeSurroundings="true" imagesPerFrame="2" height="500" width="700">
 			<display class="org.volante.abm.template.visualisation.TestAgents" title="AgentTypesVideo"/>
-		</output>
+		</output -->
 		<output class="org.volante.abm.output.CellTable" addTick="true" addRegion="true" addCellRegion="true"
 				addServices="true" addCapitals="true" addLandUse="true" addAgent="true" doubleFormat="0.000" />				
 	</outputs>

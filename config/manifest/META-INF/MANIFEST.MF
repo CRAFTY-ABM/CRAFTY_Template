@@ -18,9 +18,9 @@ Class-Path: . CRAFTY_lib/rt.jar CRAFTY_lib/CRAFTY-CoBRA.jar CRAFTY_lib/jsse.
  0.1.jar CRAFTY_lib/jung-io-2.0.1.jar CRAFTY_lib/log4j-1.2.17.jar CRAFTY_
  lib/ModellingUtilities.jar CRAFTY_lib/monte-cc.jar CRAFTY_lib/MORe.jar 
  CRAFTY_lib/ParMa.jar CRAFTY_lib/repast.simphony.bin_and_src.jar CRAFTY_lib/saf.core.runtime.jar CRAFTY_l
- ib/simple-xml-2.7.1.jar CRAFTY_lib/stax-api-1.0.1.jar CRAFTY_lib/LARA_Base-0.3.2.jar CRAFTY_lib/units-
+ ib/simple-xml-2.7.1.jar CRAFTY_lib/stax-api-1.0.1.jar CRAFTY_lib/LARA_Base.jar CRAFTY_lib/units-
  0.01.jar CRAFTY_lib/Uranus.jar CRAFTY_lib/vecmath-1.3.1.jar CRAFTY_lib/w
  stx-asl-3.2.6.jar CRAFTY_lib/xmlgraphics-commons-1.3.1.jar CRAFTY_lib/javafx7-0.1.0.jar 
  CRAFTY_lib/guava-12.0.1.jar CRAFTY_lib/jai_core.jar CRAFTY_lib/mpi.jar 
- CRAFTY_lib/LARA_Toolbox-0.3.2.jar CRAFTY_lib/jep-2.23.jar
+ CRAFTY_lib/LARA_Toolbox.jar CRAFTY_lib/jep-2.23.jar
 Main-Class: org.volante.abm.serialization.ModelRunner

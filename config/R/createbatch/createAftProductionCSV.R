@@ -77,7 +77,7 @@ for (aft in afts) {
 		# overwrite sensitivities for primary services
 		data[sensiAssignment1[aft], simp$mdata$capitals]	 <- sensis[aft,simp$mdata$capitals]
 		
-		filename = paste(simp$batchcreation$inputdatadir,  "/", simp$sim$folder, '/production/', aft, '/AftProduction_', aft,'_', multifunc, 
+		filename = paste(simp$batchcreation$inputdatadir, '/production/', aft, '/AftProduction_', aft,'_', multifunc, 
 				'_medium', '.csv', sep='')
 		cat(filename,'\n')
 		write.csv(data, filename, row.names = TRUE)

@@ -18,8 +18,6 @@
  	<property file="../../project.properties"/>
  	<property file="../../local.properties"/>
  	
- 	<property name="releaseName" value="CRAFTY-ImpressionsEU"/>
- 	
  	<!-- takes jars from here (important when they're not included in the project itself)-->	
  	<property name="CRAFTY-project" value="../../"/>
  	<property name="CRAFTY_Parallel-project" value="../CRAFTY_Parallel"/>
